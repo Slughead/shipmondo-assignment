@@ -3,13 +3,14 @@
 namespace App\Integrations\Shipmondo;
 
 use Saloon\Http\Connector;
+use Saloon\Http\Auth\BasicAuthenticator;
 
 class ShipmondoConnector extends Connector
 {
 
     public function __construct(
-        public readonly string $username,   // API username
-        public readonly string $password    // API key
+        private readonly string $username,
+        private readonly string $password
     ) {}
 
     public function resolveBaseUrl(): string
@@ -22,7 +23,7 @@ class ShipmondoConnector extends Connector
         return 'https://sandbox.shipmondo.com/api/public/v3';
     }
 
-    protected function defaultAuth(): TokenAuthenticator
+    protected function defaultAuth(): BasicAuthenticator
     {
         return new BasicAuthenticator($this->username, $this->password);
     }
